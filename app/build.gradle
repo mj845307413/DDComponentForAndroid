@@ -1,6 +1,8 @@
 apply plugin: 'com.dd.comgradle'
 //这边使用的是property的名字
 apply plugin: 'com.majun.gradle'
+//直接调用就行
+apply plugin: com.example.buildsrc.SecendClass
 
 android {
     compileSdkVersion 25

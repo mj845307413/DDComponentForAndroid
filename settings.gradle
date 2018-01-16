@@ -1,1 +1,1 @@
-include ':app', ':componentlib', ':readercomponent', ':sharecomponent', ':componentservice', ':build-gradle', ':basiclib', ':basicres', ':GradleTest'
+include ':app', ':componentlib', ':readercomponent', ':sharecomponent', ':componentservice', ':build-gradle', ':basiclib', ':basicres', ':GradleTest', ':BuildSrc'
