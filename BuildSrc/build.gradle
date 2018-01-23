@@ -1,10 +1,56 @@
 apply plugin: 'groovy'
 
 dependencies {
+    compile 'com.android.tools.build:gradle:2.3.2'
+    compile group: 'org.javassist', name: 'javassist', version: '3.20.0-GA'
     compile gradleApi()//gradle sdk
     compile localGroovy()//groovy sdk
 }
 
 repositories {
     jcenter()
+}
+
+class Address {
+
+    String province = null
+
+    String city = null
+}
+
+class HCExtension {
+
+    String myName = null;
+
+}
+
+class TestExtensionPlugin implements Plugin<Project> {
+
+    @Override
+    void apply(Project project) {
+//project.extensions相当于project.getExtensions()即返回的是ExtensionContainer对象，
+// 而ExtensionContainer对象的create方法就是把hc{}与HCExtension对应起来
+        project.extensions.create('hc', HCExtension);
+        project.extensions.create('address', Address);
+
+        project.task('readExtension') << {
+            def address = project['address']
+
+            println project['hc'].myName
+            println address.province + " " + address.city
+
+        }
+    }
+}
+
+apply plugin: TestExtensionPlugin
+
+hc {
+    address {
+        province "江苏"
+        city "南通"
+    }
+
+    myName "马骏"
+
 }
