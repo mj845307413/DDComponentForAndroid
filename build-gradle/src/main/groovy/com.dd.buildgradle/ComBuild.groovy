@@ -11,6 +11,7 @@ public class ComBuild implements Plugin<Project> {
     String compilemodule = "app"
 
     void apply(Project project) {
+        //用于在gradle文件中改变对应的参数
         project.extensions.create('combuild', ComExtension)
 
         String taskNames = project.gradle.startParameter.taskNames.toString()

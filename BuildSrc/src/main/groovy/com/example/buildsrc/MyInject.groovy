@@ -37,7 +37,6 @@ public class MyInject {
             }
         }
     }
-
     private static void changeMyClass() {
         CtClass ctClass = pool.get("com.example.appgradle.MyClass")
         // 当CtClass对象通过writeFile()、toClass()、toBytecode()转化为Class后，Javassist冻结了CtClass对象，因此，JVM不允许再次加载Class文件，所以不允许对其修改。
@@ -45,7 +44,7 @@ public class MyInject {
         ctClass.defrost()
         ctClass.setSuperclass(pool.get("com.example.appgradle.FatherClass"))
         byte[] byteArr = ctClass.toBytecode();
-        FileOutputStream fos = new FileOutputStream(new File("appgradle/build/intermediates/classes/debug/com/example/appgradle/MyClass" + ".class"));
+        FileOutputStream fos = new FileOutputStream(new File("majun_app/build/intermediates/classes/debug/com/example/appgradle/MyClass" + ".class"));
         fos.write(byteArr)
         fos.close()
         //为了防止出现frozen class (cannot edit)的结果，需要最后调用detach();

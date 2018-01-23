@@ -1,1 +1,3 @@
-include ':app', ':componentlib', ':readercomponent', ':sharecomponent', ':componentservice', ':build-gradle', ':basiclib', ':basicres', ':GradleTest', ':BuildSrc', ':appgradle'
+include ':app', ':componentlib', ':readercomponent', ':sharecomponent', ':componentservice', ':build-gradle', ':basiclib', ':basicres', ':GradleTest',
+        ':BuildSrc',
+        ':majun_app'

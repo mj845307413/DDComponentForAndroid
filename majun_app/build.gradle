@@ -1,4 +1,7 @@
 apply plugin: 'com.android.application'
+//这边使用的是property的名字
+apply plugin: 'com.majun.gradle'
+//直接调用就行
 apply plugin: com.example.buildsrc.SecendClass
 apply plugin: com.example.buildsrc.ThirdClass
 
@@ -31,4 +34,8 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
+}
+address {
+    province = "江苏"
+    city = "南通"
 }

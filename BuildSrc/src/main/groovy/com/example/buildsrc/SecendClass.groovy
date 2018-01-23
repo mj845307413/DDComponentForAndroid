@@ -9,5 +9,7 @@ public class SecendClass implements Plugin<Project> {
         System.out.println("========================");
         System.out.println("这是第二个插件!");
         System.out.println("========================");
+        project.extensions.create("address", Address)
+        project.task('showAddress', type: ShowAddress)
     }
 }
