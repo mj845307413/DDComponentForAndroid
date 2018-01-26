@@ -30,7 +30,7 @@ public class MyInject {
                         && !filePath.contains('R$')
                         && !filePath.contains('R.class')
                         && !filePath.contains("BuildConfig.class")) {
-                    changeMyClass()
+//                    changeMyClass()
                     createNewClass(path)
                     insertConstructor(filePath, packageName, path)
                 }

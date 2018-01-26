@@ -21,6 +21,7 @@ public class ComBuild implements Plugin<Project> {
         AssembleTask assembleTask = getTaskInfo(project.gradle.startParameter.taskNames)
 
         if (assembleTask.isAssemble) {
+            //在这边已经吧compilemodule改变了
             fetchMainmodulename(project, assembleTask);
             System.out.println("compilemodule  is " + compilemodule);
         }
@@ -29,10 +30,12 @@ public class ComBuild implements Plugin<Project> {
             throw new RuntimeException("you should set isRunAlone in " + module + "'s gradle.properties")
         }
 
+        //如果是RunAlone的话就需要独立打包了
         //对于isRunAlone==true的情况需要根据实际情况修改其值，
         // 但如果是false，则不用修改，该module作为一个lib，运行module:assembleRelease则发布aar到中央仓库
         boolean isRunAlone = Boolean.parseBoolean((project.properties.get("isRunAlone")))
         String mainmodulename = project.rootProject.property("mainmodulename")
+        System.out.println("mainmodulename---->" + mainmodulename)
         if (isRunAlone && assembleTask.isAssemble) {
             //对于要编译的组件和主项目，isRunAlone修改为true，其他组件都强制修改为false
             //这就意味着组件不能引用主项目，这在层级结构里面也是这么规定的
@@ -43,7 +46,7 @@ public class ComBuild implements Plugin<Project> {
             }
         }
         project.setProperty("isRunAlone", isRunAlone)
-
+        System.out.println("isRunAlone----->" + isRunAlone)
         //根据配置添加各种组件依赖，并且自动化生成组件加载代码
         if (isRunAlone) {
             project.apply plugin: 'com.android.application'
@@ -119,6 +122,7 @@ public class ComBuild implements Plugin<Project> {
                     assembleTask.isDebug = true;
                 }
                 assembleTask.isAssemble = true;
+                System.out.println("majun_task----》" + task)
                 String[] strs = task.split(":")
                 assembleTask.modules.add(strs.length > 1 ? strs[strs.length - 2] : "all");
                 break;
@@ -145,6 +149,7 @@ public class ComBuild implements Plugin<Project> {
             System.out.println("there is no add dependencies ");
             return;
         }
+        System.out.println("components------->" + components);
         String[] compileComponents = components.split(",")
         if (compileComponents == null || compileComponents.length == 0) {
             System.out.println("there is no add dependencies ");
@@ -168,8 +173,11 @@ public class ComBuild implements Plugin<Project> {
     }
 
     private class AssembleTask {
+
         boolean isAssemble = false;
+
         boolean isDebug = false;
+
         List<String> modules = new ArrayList<>();
     }
 
