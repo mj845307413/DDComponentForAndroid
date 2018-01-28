@@ -93,6 +93,5 @@ public class MyTransform extends Transform {
     @Override
     void transform(TransformInvocation transformInvocation) throws TransformException, InterruptedException, IOException {
         super.transform(transformInvocation)
-        transformInvocation.
     }
 }

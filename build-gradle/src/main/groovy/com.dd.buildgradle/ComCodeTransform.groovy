@@ -7,6 +7,11 @@ import org.apache.commons.codec.digest.DigestUtils
 import org.apache.commons.io.FileUtils
 import org.gradle.api.Project
 
+/**
+ * Transform 是用来处理 class 文件的
+ * javac是收录于JDK中的Java语言编译器。
+ * 该工具可以将后缀名为.java的源文件编译为后缀名为.class的可以运行于Java虚拟机的字节码
+ */
 public class ComCodeTransform extends Transform {
 
     private Project project
@@ -162,11 +167,21 @@ public class ComCodeTransform extends Transform {
         return "ComponentCode"
     }
 
+    /**
+     * 确定transform的输入类型是Class
+     * @return
+     */
     @Override
     Set<QualifiedContent.ContentType> getInputTypes() {
         return TransformManager.CONTENT_CLASS
     }
 
+    /**
+     * 确定transform的作用域为全工程，与上面的getInputTypes配合使用
+     * 这样在 transform(TransformInvocation transformInvocation) 方法中，
+     * transformInvocation.inputs 会传入工程内所有的 class 文件。
+     * @return
+     */
     @Override
     Set<? super QualifiedContent.Scope> getScopes() {
         return TransformManager.SCOPE_FULL_PROJECT
