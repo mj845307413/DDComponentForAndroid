@@ -26,4 +26,56 @@ allprojects {
             url uri('./repo')
         }
     }
+
+//    afterEvaluate { project ->
+//        println "测试一下---->define in root project : after ${project.name} evaluate"
+//    }
+//    beforeEvaluate { project ->
+//        if (project.name == "majun_app") {
+//            String mBakBuildFile = project.getProjectDir().absolutePath+"/build.gradle"
+//            println mBakBuildFile
+//            def text = project.buildFile.text.replaceAll(
+//                    'com\\.android\\.library', 'com.android.application')
+//            project.buildFile.renameTo(mBakBuildFile)
+//            project.buildFile.write(text)
+//            println "测试一下---->define in root project : before ${project.name} evaluate"
+//        }
+//    }
+
 }
+//subprojects {
+//    task allDeps(type: DependencyReportTask) {}
+//}
+
+//这个是在task创建的时候就直接运行的，而不是在task执行的时候运行
+task clean(type: Delete) {
+    println '执行删除操作'
+    delete rootProject.buildDir
+    doLast {
+        //添加的doLast，就是用来在执行的时候执行的（通过使用gradle来调用）
+    }
+}
+
+class MyTestListener implements TaskExecutionGraphListener {
+
+    final static String releaseTaskPath = ':majun_app:assembleDebug'
+
+    @Override
+    void graphPopulated(TaskExecutionGraph taskGraph) {
+        //查看是否包含debug任务
+        List<Task> allTasks = taskGraph.allTasks
+        for (task in allTasks) {
+            println 'task path ======> ' + task.path
+        }
+        if (taskGraph.hasTask(':majun_app:assembleDebug')) {
+            //查找release任务
+            Task releaseTask = allTasks.find { it.path == releaseTaskPath }
+            println 'releaseTask.path====>'+releaseTask.path
+            Project project = releaseTask.project
+        }
+    }
+}
+
+def myTestListener = new MyTestListener()
+//注册监听器
+gradle.taskGraph.addTaskExecutionGraphListener(myTestListener)

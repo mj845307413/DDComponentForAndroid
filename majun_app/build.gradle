@@ -4,7 +4,7 @@ apply plugin: 'com.majun.gradle'
 //直接调用就行
 apply plugin: com.example.buildsrc.SecendClass
 apply plugin: com.example.buildsrc.ThirdClass
-
+apply from: 'plugin.gradle'
 android {
     compileSdkVersion 26
     buildToolsVersion "27.0.1"
@@ -27,7 +27,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
 }
 
 dependencies {

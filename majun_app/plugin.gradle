@@ -1,0 +1,69 @@
+afterEvaluate {
+    println "afterEvaluate"
+}
+
+android.applicationVariants.all { variant ->
+    // rename apk after we assemble the application
+    variant.assemble.doLast {
+
+    }
+}
+
+tasks.whenTaskAdded { task ->
+    if (task.name.contains('assemble')) {
+        println task.name
+    }
+}
+
+//可以在build.gradle中通过如下方式监听task的创建
+tasks.whenTaskAdded { task ->
+//    println ' => ' + task.name
+    if (task.name == 'tasks') { // 区分是run还是build
+        println ' success==========> ' + task.name
+//        if (task.project.name == 'majun_app') {
+//            println '=========== 差异安装 =========='
+//            exec {
+//                workingDir "${rootDir}"
+//                commandLine 'fullinstallplugin.bat'
+//            }
+//        } else {
+//            println '=========== 全量安装 =========='
+//            File apk = file("${rootDir}/majun_app/build/outputs/apk/majun_app-debug.apk")
+//            if (apk.exists()) {
+//                //这边exec是执行的意思
+//                exec {
+//                    workingDir "${rootDir}"
+//                    commandLine 'fullinstallplugin.bat'
+//                }
+//            }
+//        }
+//        delete fileTree("${rootDir}/plugin/build/outputs/apk/dev/debug")
+    }
+}
+
+//监听某个subProject配置完毕，打印日志,一般情况下也可以放到root_gradle中的allProject中。
+gradle.afterProject { project ->
+    println('Project ' + project + '  has evaluated')
+}
+
+//监听整个task关系图的创建
+gradle.taskGraph.whenReady {
+    println '关系图的已经创建完毕'
+}
+
+//监听整个build完毕
+gradle.buildFinished {
+    println 'build的已经创建完毕'
+
+}
+
+//这种新建的task都需要通过gradle来动态运行
+task myTestTask {
+    println "这是测试myTestTask的方法"
+    doLast {
+        println "myTestTask方法里面的doLast里面的东东"
+    }
+    doFirst {
+        println "myTestTask方法里面的doFirst里面的东东"
+    }
+}

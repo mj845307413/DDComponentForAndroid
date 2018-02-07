@@ -1,0 +1,33 @@
+一、项目Gradle的构成
+Gradle中共有三种类型的构建脚本: init script, setting script，build script,分别对应三种类型的Gradle构建对象。
+
+init script：这个一般不怎么用得到，init.gradle脚本中，我们可以对当前的build做出一些全局配置，比如全局依赖，何处寻找插件等。
+
+setting script：Settings.gradle文件在项目创建于rootProject根目录下，因为settings.gradle对于多项目工程来说是必须的，
+然而对于单项目project来说不是必须的
+我们最常做的事情就是在settings脚本里面写上include ':app'这样的函数调用语句，根据groovy的语法，
+他就是在gradle生成的settings对象调用函数 include('app')
+include接受的参数是一个string数组，因此include后可以加很多参数，这个函数的意义就是：指明那些子project参与这次gradle构建
+
+build script：
+build.gradle脚本文件使我们最常见的，绝大部分配置工作发生在这里，因为它的Delegate就是Project，
+如果是多项目结构，则build.gradle文件分为两种，rootProject下的build.gradle文件，subProject下的build.gradle文件，
+每个build.gradle文件执行时的代理project都不一样。
+
+
+
+二、项目运行中的生命周期（Build life cycle）：
+
+在gradle运行的过程中，gradle会经历三个阶段
+
+1、Initialization 在这个阶段，gradle会首先生成gradle对象和settings对象，然后执行init.gradle中脚本，再执行settings.gradle中的脚本，根绝settings.gradle给每个项目生成一个project对象
+
+2、Configuration 在这个阶段，gradle会运行参与本次构建的所有project中的build.gradle文件，这个阶段完成之后，每个project中的所有task以及相互关系就确定了
+
+3、Execution 执行阶段，gradle会根据传给它的task名字运行指定的task
+
+
+三、监听器
+
+我们还可以在上述build lifecycle中添加额外的监听器，监听某件事情的完成，这样我们就可以对gradle的正常运行流程做干预
+这边具体的可以看一下plugin.gradle
